@@ -29,7 +29,7 @@
     background-color: tomato;
     position: absolute;
     /* DONT GO BELOW 20% OR ELSE IN GROUND */
-    bottom: 22%;
+    bottom: 20%;
     left: 10%;
     right: 90%;
     border: 2px solid black;

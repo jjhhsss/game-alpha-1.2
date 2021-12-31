@@ -3,6 +3,7 @@ let right = false;
 let left = false;
 let up = false;
 let down = false;
+let jumpz = false;
 
 document.addEventListener('keydown', function (event) {
     if (event.key === 'd') { // check if right
@@ -16,16 +17,11 @@ document.addEventListener('keydown', function (event) {
             left = true
         }
     }  else if (event.key === 'w') { //check if up
-        if (up == false) {
-            keysAdd('w')
+        if (up == false && jumpz == false) {
+            jump()
             up = true
         }
-    } else if (event.key === 's') { //check if down
-        if (down == false) {
-            keysAdd('s')
-            down = true
-        }
-    }
+		}
 })
 document.addEventListener('keyup', function (event) {
     if (event.key === 'd') {
@@ -34,20 +30,17 @@ document.addEventListener('keyup', function (event) {
     } else if (event.key === 'a') {
         keysRemove('a');
         left = false;
-    } else if (event.key === 'w') {
-        keysRemove('w');
+    } 
+		else if (event.key === 'w') {
+        // keysRemove('w');
         up = false;
-    } else if (event.key === 's') {
-        keysRemove('s');
-        down = false;
     }
+
 })
 
 let keysPressed = {
     'd': false,
     'a': false,
-		'w': false,
-		's': false,
 }
 
 function keysAdd(button) {
@@ -57,22 +50,24 @@ function keysAdd(button) {
 function keysRemove(button) {
     keysPressed[button] = false;
 }
+let inprocess = false;
 
 function move(button) {
     if (button == 'd') {
-        let player = document.querySelector('.player');
-        var id = setInterval(frame, 20);
-        function frame() {
-            if (keysPressed['d'] == false) {
-                clearInterval(id);
-
-                return;
-            } else {
-                player.style.left = player.offsetLeft + 2 + 'px';
-            }
-        }
+      let player = document.querySelector('.player');
+      var id = setInterval(frame, 20);
+      function frame() {
+          if (keysPressed['d'] == false) {
+              clearInterval(id);
+							console.log('end')
+              return;
+          } else {
+              player.style.left = player.offsetLeft + 4 + 'px';
+          }
+      }
+			return;
     }
-    if (button == 'a') {
+    if (keysPressed['a'] == true) {
         let player = document.querySelector('.player');
         var id = setInterval(frame, 20);
         function frame() {
@@ -80,118 +75,56 @@ function move(button) {
                 clearInterval(id);
                 return;
             } else {
-                player.style.left = player.offsetLeft - 2 + 'px';
+                player.style.left = player.offsetLeft - 4 + 'px';
             }
         }
     }
-    if (button == 'w') {
-        let player = document.querySelector('.player');
-        var id = setInterval(frame, 20);
-        function frame() {
-            if (keysPressed['w'] == false) {
-                clearInterval(id);
-                return;
-            } else {
-                player.style.top = player.offsetTop - 2 + 'px';
-            }
-        }
-    }
-    if (button == 's') {
-        let player = document.querySelector('.player');
-        var id = setInterval(frame, 20);
-        function frame() {
-            if (keysPressed['s'] == false) {
-                clearInterval(id);
-                return;
-            } else {
-                player.style.top = player.offsetTop + 2 + 'px';
-            }
-        }
-    }
-		
+
 }
+function jump() {
+	jumpz = true;
+	// go up
+	let player = document.querySelector('.player');
+	var id = setInterval(frame, 20);
+	let counter = 0;
+	let speed = 15; 
+	function frame() {
+	    if (counter == 30) {
+	        clearInterval(id);
+					counter = 0;
+					speed = 1;
+					downz()
+	        return;
+	    } else {
+	        player.style.top = player.offsetTop - speed + 'px';
+					counter++;
+					if (counter % 2 == 0) {
+						speed--;
+					}
+	    }
+	}
 
+}
+function downz() {
+	let player = document.querySelector('.player');
+	var id = setInterval(frame, 20);
+	let counter = 0;
+	let speed = 1; 
+	function frame() {
+	    if (counter == 30) {
+	        clearInterval(id);
+					counter = 0;
+					speed = 15;
+					inprocess = false;
+					jumpz = false;
 
-
-
-
-
-
-
-
-
-
-
-
-// // Don't touch, works
-
-// let d = false;
-// let a = false;
-
-// document.addEventListener('keydown', function(event) {
-// 	//check if its right
-// 	if (event.key == 'd') {
-// 		if (d == false) {
-// 			move('right')
-// 			d = true
-// 		} else {
-// 			d = false
-// 		}
-// 	}
-// 	//check if its left
-// 	if (event.key == 'a') {
-// 		if (a == false) {
-// 			move('left')
-// 			a = true
-// 		} else {
-// 			d = false
-// 		}
-// 	}
-// })
-
-// let keys = {
-// 	'd' : false,
-// 	'a' : false
-// }
-
-// document.addEventListener('keyup', function (event) {
-// 	// check if its right
-// 	if (event.key == 'd') {
-// 		right = false;
-// 	}
-// 	//check if its left
-// 	if (event.key == 'a') {
-// 		left = false;
-// 	}
-// })
-
-// function move(dir) {
-// 	if (dir == 'right') {
-// 		console.log(dir)
-// 		let player = document.querySelector('.player');
-// 		var id = setInterval(frame, 20);
-// 		function frame() {
-// 			if (right == false) {
-// 				clearInterval(id);
-// 				return;
-// 			} else {
-// 				player.style.left = player.offsetLeft + 2 + 'px';
-// 			}
-// 		}
-// 	}
-// 	if (dir == 'left') {
-// 		console.log(dir)
-// 		let player = document.querySelector('.player');
-// 		var id = setInterval(frame, 20);
-// 		function frame() {
-// 			if (left == false) {
-// 				clearInterval(id);
-// 				return;
-// 			} else {
-// 				player.style.left = player.offsetLeft - 2 + 'px';
-// 			}
-// 		}
-// 	}
-// }
-
-
+	        return;
+	    } else {
+	        player.style.top = player.offsetTop + speed + 'px';
+					counter++;
+					if (counter % 2 == 0) {
+						speed++;
+					}
+	    }
+	}
+}
